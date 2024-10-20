@@ -2,182 +2,100 @@ package conversiones;
 
 /**
  *
- * @author lalot
+ * @author eduardotec05
  */
-import java.util.Scanner;
+public class ConversorMedidas {
 
-public class ConvertidorMedidas {
+    //atributos de la clase
+    private double valor, valorConvertido;
 
-    /** 
-     * Método para verificar si la entrada es un número válido
-     * @param str Entrdad del string para validar
-     * @return devuelve si el valor ingresa es número o no.
-     */
-    public boolean esNumero(String str) {
-        try {
-            Double.parseDouble(str);  // Intentar convertir la cadena a número
-            return true;  // Si la conversión es exitosa, es un número
-        } catch (NumberFormatException e) {
-            return false;  // Si ocurre una excepción, no es un número válido
-        }
-    }
-
-    /** Método para validar que la unidad ingresada es válida
-     * 
-     * @param unidad ingresa el valor de la unidad que va a validar
-     * @return devuelve si la unidad esta en las opciones o no
-     */
-    public boolean esUnidadValida(String unidad) {
-        String[] unidadesValidas = {"metros", "pulgadas", "pies", "centimetros", "kilometros", "millas"};
-        // Validar si es un número
-        try {
-            int opcion = Integer.parseInt(unidad);
-            return opcion >= 1 && opcion <= unidadesValidas.length;  // Número válido en el rango de opciones
-        } catch (NumberFormatException e) {
-            // Validar si es el nombre de la unidad
-            for (String u : unidadesValidas) {
-                if (u.equalsIgnoreCase(unidad)) {
-                    return true;
-                }
-            }
-        }
-        return false;  // Si no es número válido ni nombre válido, retornar falso
+    //constructor
+    public ConversorMedidas() {
+        this.valor = 0;
     }
 
     /**
-     * Método para imprimir las opciones de medidas
-     * 
+     * Método para convertir el valor ingresado por el usuario a metros
+     *
+     * @param valor es el valor ingresado por el usuario
+     * @param unidadOrigen es la unidad de origen que el usuario requiera
      */
-    public void mostrarOpcionesUnidades() {
-        String[] unidades = {"Metros", "Pulgadas", "Pies", "Centimetros", "Kilometros", "Millas"};
-        System.out.println("Opciones de unidades:");
-        for (int i = 0; i < unidades.length; i++) {
-            System.out.println((i + 1) + ". " + unidades[i]);
-        }
-    }
+    public void convertidorMedidas(double valor, String unidadOrigen) {
 
-    /** Método para convertir cualquier unidad a metros
-     * 
-     * @param valor Entrada del usuario para convertirla a metros
-     * @param unidadOrigen Es la unidad de medida de la cual quiere convertir
-     * @return devuelve la entrada del usuario convertida en metros
-     */
-    public double aMetros(double valor, String unidadOrigen) {
-        if (valor > 0) {
-            switch (unidadOrigen.toLowerCase()) {
-                case "metros", "1" -> {
-                    return valor; // Ya está en metros
-                }
-                case "pulgadas", "2" -> {
-                    return valor * 0.0254;
-                }
-                case "pies", "3" -> {
-                    return valor * 0.3048;
-                }
-                case "centimetros", "4" -> {
-                    return valor * 0.01;
-                }
-                case "kilometros", "5" -> {
-                    return valor * 1000;
-                }
-                case "millas", "6" -> {
-                    return valor * 1609.34;
-                }
-                default -> {
-                    System.out.println("Unidad de entrada no válida.");
-                    return -1;
-                }
-            }
-        } else {
-            System.out.println("El valor debe ser mayor a 0. Recuerda que no existen medidas negativas.");
-            return -1;
-        }
-    }
-
-    /** Método para convertir de metros a otra unidad
-     * 
-     * @param valor toma el valor convertido en metros para convertilo en la unidad deseada
-     * @param unidadDestino Es la unidad final a la cual se va a convertir 
-     * @return devuelve el valor convertido a la unidad deseada
-     */
-    public double deMetros(double valor, String unidadDestino) {
-        switch (unidadDestino.toLowerCase()) {
+        switch (unidadOrigen.toLowerCase()) {
             case "metros", "1" -> {
-                return valor; // Ya está en metros
+                this.valor = valor; // Ya está en metros
             }
             case "pulgadas", "2" -> {
-                return valor / 0.0254;
+                this.valor = valor * 0.0254;
             }
             case "pies", "3" -> {
-                return valor / 0.3048;
+                this.valor = valor * 0.3048;
             }
             case "centimetros", "4" -> {
-                return valor / 0.01;
+                this.valor = valor * 0.01;
             }
             case "kilometros", "5" -> {
-                return valor / 1000;
+                this.valor = valor * 1000;
             }
             case "millas", "6" -> {
-                return valor / 1609.34;
+                this.valor = valor * 1609.34;
             }
             default -> {
-                System.out.println("Unidad de entrada no válida.");
-                return -1;
+                this.valor = 0;
             }
         }
+
+    }//fin de metodo para convertir cualquier valor a metros
+
+    /**
+     * Método que devuelve el valor que ya está convertido
+     *
+     * @return devuelve el valor ya convertido
+     */
+    public double getNum() {
+        return valorConvertido;
     }
 
-    /** Método principal que realiza la conversión con validación en bucles
-     * 
-     * @param scanner es la entrada de datos para despues validar si esta es un numero o no
-     * @return devuelve el valor que se va a mostrar al usuario
+    /**
+     * Método para convertir a metros
      */
-    public double convertir(Scanner scanner) {
-        String valorStr;
-        double valor = 0;
+    public void setMetros() {
+        this.valorConvertido = this.valor;
+    }
 
-        // Entrada de valor numérico con validación en un bucle
-        do {
-            System.out.print("Ingrese el valor a convertir (debe ser un número positivo): ");
-            valorStr = scanner.nextLine();
-            if (!esNumero(valorStr)) {
-                System.out.println("Error: El valor ingresado no es un número válido.");
-            } else {
-                valor = Double.parseDouble(valorStr);
-                if (valor <= 0) {
-                    System.out.println("Error: El valor debe ser mayor a 0.");
-                }
-            }
-        } while (!esNumero(valorStr) || valor <= 0);  // Repetir hasta que el valor sea válido
+    /**
+     * Método para convertir el valor en pulgadas
+     */
+    public void setPulgadas() {
+        this.valorConvertido = this.valor / 0.0254;
+    }
 
-        // Solicitar unidad de origen y destino
-        mostrarOpcionesUnidades(); // Mostrar opciones de unidades
+    /**
+     * Método para convertir el valor en millas
+     */
+    public void setMillas() {
+        this.valorConvertido = this.valor / 1609.34;
+    }
 
-        String unidadOrigen, unidadDestino;
-        do {
-            System.out.print("Ingrese la unidad de origen (nombre o número): ");
-            unidadOrigen = scanner.nextLine();
-            if (!esUnidadValida(unidadOrigen)) {
-                System.out.println("Error: La unidad de origen no es válida.");
-            }
-        } while (!esUnidadValida(unidadOrigen));  // Repetir hasta que la unidad de origen sea válida
+    /**
+     * Método para convertir el valor en pies
+     */
+    public void setPies() {
+        this.valorConvertido = this.valor / 0.3048;
+    }
 
-        do {
-            System.out.print("Ingrese la unidad de destino (nombre o número): ");
-            unidadDestino = scanner.nextLine();
-            if (!esUnidadValida(unidadDestino)) {
-                System.out.println("Error: La unidad de destino no es válida.");
-            }
-        } while (!esUnidadValida(unidadDestino));  // Repetir hasta que la unidad de destino sea válida
+    /**
+     * Método para convertir el valor en centimetros
+     */
+    public void setCentimetros() {
+        this.valorConvertido = this.valor / 0.01;
+    }
 
-        // Convertir a metros
-        double valorEnMetros = aMetros(valor, unidadOrigen);
-        if (valorEnMetros == -1) {
-            return -1;
-        }
-
-        // Convertir de metros a la unidad destino
-        double valorConvertido = deMetros(valorEnMetros, unidadDestino);
-        return valorConvertido;
+    /**
+     * Método para devolver el valor en kilometros
+     */
+    public void setKilometros() {
+        this.valorConvertido = this.valor / 1000;
     }
 }
